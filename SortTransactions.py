@@ -5,10 +5,17 @@ import sys
 import numpy as np
 import pandas as pd
 
-if __name__ == "__main__":
+def check_file_exists(file_path):
+    try:
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"The file {file_path} does not exist.")
+    except FileNotFoundError as error:
+        print(error)
+        sys.exit(1)
 
+def main():
     # Command line arguments
-    if "-verbose" in sys.argv:
+    if "-v" or "--verbose" in sys.argv:
         verbose = True
     else:
         verbose = False
@@ -53,6 +60,7 @@ if __name__ == "__main__":
     df_list = []
     for account in accounts:
         file_path_import = os.path.join(parent_path,"Statements",bank + "_" + account + "_" + date + ".csv")
+        check_file_exists(file_path_import)
         df_list.append(pd.read_csv(file_path_import,header=None))
 
     # Function to categorize transactions in dataframe
@@ -106,12 +114,6 @@ if __name__ == "__main__":
     df.to_csv(file_path_export_csv, index=False)
 
     if verbose:
-        # Print outputs by category
-        # file_path_export_txt = os.path.join(parent_path,"Outputs",bank + "_" + account_str + "_" + date + "_sorted.txt")
-        # if os.path.isfile(file_path_export_txt):
-        #     os.remove(file_path_export_txt)
-        # f = open(file_path_export_txt, "a")
-        # f.close()
         split_1 = '********************************************'
         split_2 = '--------------------------------------------'
         split_3 = '============================================'
@@ -132,3 +134,6 @@ if __name__ == "__main__":
 
     # Status message
     print(f"\nSuccess! Transactions have been sorted to\n{file_path_export_csv}\n\n")
+
+if __name__ == "__main__":
+    main()
