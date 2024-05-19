@@ -1,0 +1,7 @@
+Date,Description,Amount,AccountType
+2023-11-30,Interest Payment,$0.01,HSA
+2023-11-30,Service Charge,$-0.95,HSA
+2023-11-22,Individual Contribution HSA,$300.00,HSA
+2023-11-22,Employer Contribution HSA,$199.98,HSA
+2023-11-08,Individual Contribution HSA,$300.00,HSA
+2023-11-08,Employer Contribution HSA,$200.01,HSA
