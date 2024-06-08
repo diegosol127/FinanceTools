@@ -1,0 +1,26 @@
+DATE,AMOUNT,DESCRIPTION,INSTITUTION,CATEGORY
+2023-11-01,-11.75,movie club fee,Wells Fargo,Memberships and Subscriptions
+2023-11-01,-44.93,HAIRCUT,Wells Fargo,Personal Expenses
+2023-11-01,-1000.0,MONTHLY RENT,Wells Fargo,Rent and Utilities
+2023-11-02,-66.0,CLOTHES,Wells Fargo,Personal Expenses
+2023-11-08,300.0,Individual Contribution HSA,Optum,Income
+2023-11-08,200.01,Employer Contribution HSA,Optum,Income
+2023-11-08,-158.0,GROCERY STORE,Wells Fargo,Groceries
+2023-11-09,500.0,MONTHLY DIVIDENDS,Wells Fargo,Income
+2023-11-09,1000.0,Employer DIR DEP,Wells Fargo,Income
+2023-11-13,-50.94,GYM MEMBERSHIP,Wells Fargo,Memberships and Subscriptions
+2023-11-14,-63.0,BOOK STORE,Wells Fargo,Personal Expenses
+2023-11-14,-152.95,SUPERMARKET,Wells Fargo,Groceries
+2023-11-20,-60.0,dental expenses,Wells Fargo,Medical Expenses
+2023-11-22,1000.0,Employer DIR DEP,Wells Fargo,Income
+2023-11-22,-51.07,ITALIAN FOOD,Wells Fargo,Restaurants
+2023-11-22,199.98,Employer Contribution HSA,Optum,Income
+2023-11-22,300.0,Individual Contribution HSA,Optum,Income
+2023-11-24,200.0,CASHED CHECK,Wells Fargo,Income
+2023-11-24,-500.0,AIRLINE FLT,Wells Fargo,Travel Expenses
+2023-11-24,-45.0,USA GASOLINE,Wells Fargo,Gas
+2023-11-30,-66.97,CAR MAINTAINENCE FEE,Wells Fargo,Car Maintainence and Insurance
+2023-11-30,-21.5,FRESH FRUIT,Wells Fargo,Groceries
+2023-11-30,-0.95,Service Charge,Optum,Personal Expenses
+2023-11-30,0.42,INTEREST PAYMENT,Wells Fargo,Income
+2023-11-30,0.01,Interest Payment,Optum,Income
