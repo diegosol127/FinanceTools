@@ -63,33 +63,20 @@ def extract_data(directory,date):
     df_combined.reset_index(drop=True, inplace=True)
     return df_combined
 
-def check_file_exists(file_path):
-    # Check if a file exists in the given directory
-    try:
-        if not os.path.exists(file_path):
-            raise FileNotFoundError(f'The file {file_path} does not exist.')
-    except FileNotFoundError as error:
-        print(error)
-        sys.exit(1)
-
-
 #=================================================================================================
 def main():
+    # Change working directory
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
     # Command line arguments
     if '-v' in sys.argv or '--verbose' in sys.argv:
         verbose = True
     else:
         verbose = False
 
-    # Bank options: WellsFargo, Optum
-    # Account options: Checking, Savings, Credit, HSA
-    bank = 'MainBank'
-    accounts = ['Checking', 'Savings', 'Credit']
+    # User input
     month = input('Enter Month (mm): ')
     year = input('Enter Year (yyyy): ')
-
-    # Change working directory
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
     # Import categories and keywords from json files
     categories_keywords = {}
@@ -147,10 +134,6 @@ def main():
     categories_sorted = sorted(categories_unsorted, key=lambda x: x[1], reverse = False)
 
     # Export data to csv
-    account_str = accounts[0]
-    if len(accounts) > 1:
-        for i in range(1,len(accounts)):
-            account_str += '_' + accounts[i]
     file_path_export_csv = os.path.join(parent_path,'Outputs','Sorted_Transactions_' + date + '.csv')
     df.to_csv(file_path_export_csv, index=False)
 
