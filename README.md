@@ -22,9 +22,9 @@ This set of tools lets you view and interact with your transactions. With it, yo
 
 ### 1. Incorporate all financial accounts
 
-- [ ] Organize statements into unique folders
-- [ ] Search all folders for file corresponding to the input month and year
-- [ ] Consolidate CSV format for files from all financial sources, then merge into a data frame for processing
+- [x] Organize statements into unique folders
+- [x] Search all folders for file corresponding to the input month and year
+- [x] Consolidate CSV format for files from all financial sources, then merge into a data frame for processing
 
 ### 2. Update classification profile
 
