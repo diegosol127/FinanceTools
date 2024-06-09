@@ -5,9 +5,28 @@ import sys
 import numpy as np
 import pandas as pd
 
+def get_classification_dict(directory):
+    # Get a list of all JSON files in a given directory
+    classification_dict = {}
+    all_files = os.listdir(directory)
+    json_files = [file for file in all_files if file.endswith('.json')]
+    for json_file in json_files:
+        file_path = os.path.join(directory, json_file)
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+            classification_dict.update(data)
+    return classification_dict
+
+def group_transactions(description, classification_dict):
+    # Identify a category for the given transaction
+    for category, keywords in classification_dict.items():
+        for keyword in keywords:
+            if keyword.upper() in description.upper():
+                return category
+    return '***Unlabelled***'
 
 def parse_Optum(file_path):
-    # Parse CSV files in the format given by Optume
+    # Parse CSV files in the format given by Optum
     df = pd.read_csv(file_path, header=None)
     df.drop(0, axis=0, inplace=True)
     df.drop(3, axis=1, inplace=True)
@@ -74,56 +93,34 @@ def main():
     else:
         verbose = False
 
-    # User input
-    month = input('Enter Month (mm): ')
-    year = input('Enter Year (yyyy): ')
+    if '-m' in sys.argv or '--manual' in sys.argv:
+        month = input('Enter Month (mm): ')
+        year = input('Enter Year (yyyy): ')
+    else:
+        month = '11'
+        year = '2023'
 
-    # Import categories and keywords from json files
-    categories_keywords = {}
-    json_dir = 'ClassificationData'
-    json_ext = '.json'
-    # TASK: automate this step by reading the names of the json files
-    json_files = [
-        '_income',
-        'car',
-        'gas',
-        'groceries',
-        'loans',
-        'medical',
-        'memberships',
-        'personal',
-        'rent',
-        'restaurants',
-        'travel',
-    ]
-
-    for json_file in json_files:
-        with open(os.path.join(json_dir,json_file+json_ext), 'r') as file:
-            category_data = json.load(file)
-            categories_keywords.update(category_data)
-
-    # Import data from csv files
+    # Get current file path
     parent_path = os.path.dirname(os.path.abspath(__file__))
     date = year + '_' + month
-
-    # Function to categorize transactions in dataframe
-    def group_transactions(description):
-        for category, keywords in categories_keywords.items():
-            for keyword in keywords:
-                if keyword.upper() in description.upper():
-                    return category
-        return '***Unlabelled***'
     
+    # Import CSV data from selected month and year
     df = extract_data(parent_path + '\\Statements',date)
 
+    # Import categories and keywords from json files
+    json_dir = os.path.join(parent_path,'ClassificationData')
+    categories_keywords = get_classification_dict(json_dir)
+
     # Sort transactions into their respective categories
-    df = df.copy()
-    df['CATEGORY'] = df['DESCRIPTION'].apply(group_transactions)
-    df.reindex(columns=['DATE', 'AMOUNT', 'DESCRIPTION', 'INSTITUTION', 'CATEGORY'])
+    df['CATEGORY'] = df['DESCRIPTION'].apply(lambda x: group_transactions(x, categories_keywords))
+
+    # Group all expenses and incomes in their respective dataframes
     df_expenses = df[df['CATEGORY'] != 'Income']
     df_income = df[df['CATEGORY'] == 'Income']
-    total_expenses = df_expenses.values[:,1].sum()
-    total_income = df_income.values[:,1].sum()
+
+    # Calculate totals for expenses and income
+    total_expenses = df_expenses['AMOUNT'].sum()
+    total_income = df_income['AMOUNT'].sum()
 
     # Sort categories by most expensive
     categories_unsorted = []
@@ -145,8 +142,7 @@ def main():
         for category, group_cost in categories_sorted:
             grouped_transactions = df[df['CATEGORY'] == category]
             if category != 'Income':
-                print(f'''\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   
-                      {group_cost/total_expenses*100:0.2f}% Total Costs   \n{split_2*3}''')
+                print(f'''\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   {group_cost/total_expenses*100:0.2f}% Total Costs   \n{split_2*3}''')
             else:
                 print(f'\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   \n{split_2*3}')
             print(grouped_transactions.iloc[:,:4].to_string(index=False,max_colwidth=114,justify='justify-all',col_space=[15,15,100,20]))
