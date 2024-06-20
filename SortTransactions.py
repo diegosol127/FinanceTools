@@ -5,9 +5,11 @@ import sys
 import numpy as np
 import pandas as pd
 
-def get_classification_dict(directory):
+def get_classification_info(directory):
     # Get a list of all JSON files in a given directory
     classification_dict = {}
+    expenses_list = []
+    income_list = []
     all_files = os.listdir(directory)
     json_files = [file for file in all_files if file.endswith('.json')]
     for json_file in json_files:
@@ -15,7 +17,12 @@ def get_classification_dict(directory):
         with open(file_path, 'r') as f:
             data = json.load(f)
             classification_dict.update(data)
-    return classification_dict
+            if 'expenses' in json_file:
+                expenses_list.append(list(data.keys())[0])
+            else:
+                income_list.append(list(data.keys())[0])
+
+    return classification_dict, expenses_list, income_list
 
 def group_transactions(description, classification_dict):
     # Identify a category for the given transaction
@@ -109,14 +116,14 @@ def main():
 
     # Import categories and keywords from json files
     json_dir = os.path.join(parent_path,'ClassificationData')
-    categories_keywords = get_classification_dict(json_dir)
+    categories_keywords, expenses_categories, income_categories = get_classification_info(json_dir)
 
     # Sort transactions into their respective categories
     df['CATEGORY'] = df['DESCRIPTION'].apply(lambda x: group_transactions(x, categories_keywords))
 
     # Group all expenses and incomes in their respective dataframes
-    df_expenses = df[df['CATEGORY'] != 'Income']
-    df_income = df[df['CATEGORY'] == 'Income']
+    df_expenses = df[df['CATEGORY'].isin(expenses_categories)]
+    df_income = df[df['CATEGORY'].isin(income_categories)]
 
     # Calculate totals for expenses and income
     total_expenses = df_expenses['AMOUNT'].sum()
