@@ -137,10 +137,22 @@ def main():
         categories_unsorted.append([category,group_cost])
     categories_sorted = sorted(categories_unsorted, key=lambda x: x[1], reverse = False)
 
-    # Export data to csv
-    file_path_export_csv = os.path.join(parent_path,'Outputs','Sorted_Transactions_' + date + '.csv')
-    df.to_csv(file_path_export_csv, index=False)
+    # Create a DataFrame
+    max_len = max(len(expenses_categories), len(income_categories))
+    expenses_categories.extend([None] * (max_len - len(expenses_categories)))
+    income_categories.extend([None] * (max_len - len(income_categories)))
+    df_categories = pd.DataFrame({
+        "Expenses": expenses_categories,
+        "Income": income_categories
+    })
 
+    # Export data to csv
+    file_path_sorted_transactions = os.path.join(parent_path,'Outputs','Sorted_Transactions_' + date + '.csv')
+    file_path_categories = os.path.join(parent_path,'Outputs','Categories.csv')
+    df.to_csv(file_path_sorted_transactions, index=False)
+    df_categories.to_csv(file_path_categories, index=False)
+
+    # Command line output
     if verbose:
         split_1 = '***************************************************'
         split_2 = '---------------------------------------------------'
@@ -161,7 +173,9 @@ def main():
         print(f'\n\n\n\n\n{split_3*3}\nNet Gain/Loss for {year}-{month}:  ${net_gain:0.2f}\n{split_3*3}\n')
 
     # Status message
-    print(f'\nSuccess! Transactions have been sorted to\n{file_path_export_csv}\n\n')
+    print('\n\nSuccess!')
+    print(f'\nTransactions have been sorted to\n\t{file_path_sorted_transactions}')
+    print(f'\nCategories have been sorted to\n\t{file_path_categories}\n\n')
 
 if __name__ == '__main__':
     main()
