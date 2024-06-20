@@ -141,10 +141,10 @@ def main():
         print(f'\n\n\n{split_1*3}\n{split_2*3}\nSTATEMENT ANALYSIS: {year}-{month}\n{split_2*3}\n{split_1*3}\n')
         for category, group_cost in categories_sorted:
             grouped_transactions = df[df['CATEGORY'] == category]
-            if category != 'Income':
-                print(f'''\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   {group_cost/total_expenses*100:0.2f}% Total Costs   \n{split_2*3}''')
+            if group_cost < 0:
+                print(f'''\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   {group_cost/total_expenses*100:0.2f}% Total Expenses   \n{split_2*3}''')
             else:
-                print(f'\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   \n{split_2*3}')
+                print(f'\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   {group_cost/total_income*100:0.2f}% Total Income   \n{split_2*3}')
             print(grouped_transactions.iloc[:,:4].to_string(index=False,max_colwidth=114,justify='justify-all',col_space=[15,15,100,20]))
 
         # Print net gain/loss for time period
