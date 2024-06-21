@@ -1,6 +1,7 @@
 # Import libraries
-import os
+import argparse
 import json
+import os
 import sys
 import numpy as np
 import pandas as pd
@@ -90,22 +91,13 @@ def extract_data(directory,date):
     return df_combined
 
 #=================================================================================================
-def main():
+def main(args):
     # Change working directory
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
     # Command line arguments
-    if '-v' in sys.argv or '--verbose' in sys.argv:
-        verbose = True
-    else:
-        verbose = False
-
-    if '-m' in sys.argv or '--manual' in sys.argv:
-        month = input('Enter Month (mm): ')
-        year = input('Enter Year (yyyy): ')
-    else:
-        month = '11'
-        year = '2023'
+    month = args.month
+    year = args.year
 
     # Get current file path
     parent_path = os.path.dirname(os.path.abspath(__file__))
@@ -153,7 +145,7 @@ def main():
     df_categories.to_csv(file_path_categories, index=False)
 
     # Command line output
-    if verbose:
+    if args.verbose:
         split_1 = '***************************************************'
         split_2 = '---------------------------------------------------'
         split_3 = '==================================================='
@@ -177,5 +169,14 @@ def main():
     print(f'\nTransactions have been sorted to\n\t{file_path_sorted_transactions}')
     print(f'\nCategories have been sorted to\n\t{file_path_categories}\n\n')
 
+#==================================================================================================================================================================================================
+#==================================================================================================================================================================================================
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Sort transactions for selected month and year.')
+    parser.add_argument('--month', required=True, type=str, help='Selected month')
+    parser.add_argument('--year', required=True, type=str, help='Selected year')
+    parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose mode')
+
+    args = parser.parse_args()
+
+    main(args)
