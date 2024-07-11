@@ -54,10 +54,6 @@ def parse_WellsFargo(file_path):
     df['INSTITUTION'] = 'Wells Fargo'
     return df
     
-def get_institution_name(path):
-    # Extract the institution name from the folder path
-    return os.path.basename(os.path.dirname(path))
-
 def parse_file(file_path):
     # Return a data parser based on the name of the institution
     parsers = {
@@ -65,7 +61,7 @@ def parse_file(file_path):
         'WellsFargo': parse_WellsFargo
     }
 
-    institution = get_institution_name(file_path)
+    institution = os.path.basename(os.path.dirname(file_path))
     if institution in parsers:
         return parsers[institution](file_path)
     else:
@@ -152,10 +148,12 @@ def main(args):
         print(f'\n\n\n{split_1*3}\n{split_2*3}\nSTATEMENT ANALYSIS: {year}-{month}\n{split_2*3}\n{split_1*3}\n')
         for category, group_cost in categories_sorted:
             grouped_transactions = df[df['CATEGORY'] == category]
-            if group_cost < 0:
+            if category in expenses_categories:
                 print(f'''\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   {group_cost/total_expenses*100:0.2f}% Total Expenses   \n{split_2*3}''')
-            else:
+            elif category in income_categories:
                 print(f'\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   {group_cost/total_income*100:0.2f}% Total Income   \n{split_2*3}')
+            else:
+                print(f'\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   \n{split_2*3}')
             print(grouped_transactions.iloc[:,:4].to_string(index=False,max_colwidth=114,justify='justify-all',col_space=[15,15,100,20]))
 
         # Print net gain/loss for time period
