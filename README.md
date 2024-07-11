@@ -28,10 +28,10 @@ This set of tools lets you view and interact with your transactions. With it, yo
 
 ### 2. Update classification profile
 
-- [ ] Update json file names so they are all preceded by `income_` or `expenses_`
+- [x] Update json file names so they are all preceded by `income_` or `expenses_`
+- [x] Create income categories to consider account variety (employment, retirement fund, HSA, etc.)
+- [x] Make Excel read the categories from the json files directly
 - [ ] Update expense categories (check out potential categories below) and include descriptions in the json files
-- [ ] Create income categories to consider account variety (employment, retirement fund, HSA, etc.)
-- [ ] Make Excel read the categories from the json files directly
 
 ### 3. Use Excel for manual CSV file updates
 

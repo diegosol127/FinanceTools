@@ -4,20 +4,20 @@ DATE,AMOUNT,DESCRIPTION,INSTITUTION,CATEGORY
 2023-12-01,-1000.0,MONTHLY RENT,Wells Fargo,Rent and Utilities
 2023-12-02,-66.0,CLOTHES,Wells Fargo,Personal Expenses
 2023-12-08,-158.0,GROCERY STORE,Wells Fargo,Groceries
-2023-12-09,500.0,MONTHLY DIVIDENDS,Wells Fargo,Income
-2023-12-09,1000.0,Employer DIR DEP,Wells Fargo,Income
+2023-12-09,500.0,MONTHLY DIVIDENDS,Wells Fargo,Employment
+2023-12-09,1000.0,Employer DIR DEP,Wells Fargo,Employment
 2023-12-13,-50.94,GYM MEMBERSHIP,Wells Fargo,Memberships and Subscriptions
 2023-12-14,-152.95,SUPERMARKET,Wells Fargo,Groceries
 2023-12-14,-63.0,BOOK STORE,Wells Fargo,Personal Expenses
 2023-12-20,-60.0,dental expenses,Wells Fargo,Medical Expenses
 2023-12-22,-51.07,ITALIAN FOOD,Wells Fargo,Restaurants
-2023-12-22,1000.0,Employer DIR DEP,Wells Fargo,Income
-2023-12-24,200.0,CASHED CHECK,Wells Fargo,Income
+2023-12-22,1000.0,Employer DIR DEP,Wells Fargo,Employment
+2023-12-24,200.0,CASHED CHECK,Wells Fargo,Employment
 2023-12-24,-500.0,AIRLINE FLT,Wells Fargo,Travel Expenses
 2023-12-24,-45.0,USA GASOLINE,Wells Fargo,Gas
-2023-12-25,100.0,Individual Contribution HSA,Optum,Income
-2023-12-25,50.0,Employer Contribution HSA,Optum,Income
-2023-12-25,50.0,Employer Contribution HSA,Optum,Income
+2023-12-25,100.0,Individual Contribution HSA,Optum,HSA
+2023-12-25,50.0,Employer Contribution HSA,Optum,HSA
+2023-12-25,50.0,Employer Contribution HSA,Optum,HSA
 2023-12-30,-66.97,CAR MAINTAINENCE FEE,Wells Fargo,Car Maintainence and Insurance
 2023-12-30,-21.5,FRESH FRUIT,Wells Fargo,Groceries
-2023-12-30,0.42,INTEREST PAYMENT,Wells Fargo,Income
+2023-12-30,0.42,INTEREST PAYMENT,Wells Fargo,Employment

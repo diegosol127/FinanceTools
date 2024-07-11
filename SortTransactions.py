@@ -1,13 +1,40 @@
 # Import libraries
-import os
+import argparse
 import json
+import os
 import sys
 import numpy as np
 import pandas as pd
 
+def get_classification_info(directory):
+    # Get a list of all JSON files in a given directory
+    classification_dict = {}
+    expenses_list = []
+    income_list = []
+    all_files = os.listdir(directory)
+    json_files = [file for file in all_files if file.endswith('.json')]
+    for json_file in json_files:
+        file_path = os.path.join(directory, json_file)
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+            classification_dict.update(data)
+            if 'expenses' in json_file:
+                expenses_list.append(list(data.keys())[0])
+            else:
+                income_list.append(list(data.keys())[0])
+
+    return classification_dict, expenses_list, income_list
+
+def group_transactions(description, classification_dict):
+    # Identify a category for the given transaction
+    for category, keywords in classification_dict.items():
+        for keyword in keywords:
+            if keyword.upper() in description.upper():
+                return category
+    return '***Unlabelled***'
 
 def parse_Optum(file_path):
-    # Parse CSV files in the format given by Optume
+    # Parse CSV files in the format given by Optum
     df = pd.read_csv(file_path, header=None)
     df.drop(0, axis=0, inplace=True)
     df.drop(3, axis=1, inplace=True)
@@ -27,10 +54,6 @@ def parse_WellsFargo(file_path):
     df['INSTITUTION'] = 'Wells Fargo'
     return df
     
-def get_institution_name(path):
-    # Extract the institution name from the folder path
-    return os.path.basename(os.path.dirname(path))
-
 def parse_file(file_path):
     # Return a data parser based on the name of the institution
     parsers = {
@@ -38,7 +61,7 @@ def parse_file(file_path):
         'WellsFargo': parse_WellsFargo
     }
 
-    institution = get_institution_name(file_path)
+    institution = os.path.basename(os.path.dirname(file_path))
     if institution in parsers:
         return parsers[institution](file_path)
     else:
@@ -64,66 +87,35 @@ def extract_data(directory,date):
     return df_combined
 
 #=================================================================================================
-def main():
+def main(args):
     # Change working directory
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
     # Command line arguments
-    if '-v' in sys.argv or '--verbose' in sys.argv:
-        verbose = True
-    else:
-        verbose = False
+    month = args.month
+    year = args.year
 
-    # User input
-    month = input('Enter Month (mm): ')
-    year = input('Enter Year (yyyy): ')
-
-    # Import categories and keywords from json files
-    categories_keywords = {}
-    json_dir = 'ClassificationData'
-    json_ext = '.json'
-    # TASK: automate this step by reading the names of the json files
-    json_files = [
-        '_income',
-        'car',
-        'gas',
-        'groceries',
-        'loans',
-        'medical',
-        'memberships',
-        'personal',
-        'rent',
-        'restaurants',
-        'travel',
-    ]
-
-    for json_file in json_files:
-        with open(os.path.join(json_dir,json_file+json_ext), 'r') as file:
-            category_data = json.load(file)
-            categories_keywords.update(category_data)
-
-    # Import data from csv files
+    # Get current file path
     parent_path = os.path.dirname(os.path.abspath(__file__))
     date = year + '_' + month
-
-    # Function to categorize transactions in dataframe
-    def group_transactions(description):
-        for category, keywords in categories_keywords.items():
-            for keyword in keywords:
-                if keyword.upper() in description.upper():
-                    return category
-        return '***Unlabelled***'
     
+    # Import CSV data from selected month and year
     df = extract_data(parent_path + '\\Statements',date)
 
+    # Import categories and keywords from json files
+    json_dir = os.path.join(parent_path,'ClassificationData')
+    categories_keywords, expenses_categories, income_categories = get_classification_info(json_dir)
+
     # Sort transactions into their respective categories
-    df = df.copy()
-    df['CATEGORY'] = df['DESCRIPTION'].apply(group_transactions)
-    df.reindex(columns=['DATE', 'AMOUNT', 'DESCRIPTION', 'INSTITUTION', 'CATEGORY'])
-    df_expenses = df[df['CATEGORY'] != 'Income']
-    df_income = df[df['CATEGORY'] == 'Income']
-    total_expenses = df_expenses.values[:,1].sum()
-    total_income = df_income.values[:,1].sum()
+    df['CATEGORY'] = df['DESCRIPTION'].apply(lambda x: group_transactions(x, categories_keywords))
+
+    # Group all expenses and incomes in their respective dataframes
+    df_expenses = df[df['CATEGORY'].isin(expenses_categories)]
+    df_income = df[df['CATEGORY'].isin(income_categories)]
+
+    # Calculate totals for expenses and income
+    total_expenses = df_expenses['AMOUNT'].sum()
+    total_income = df_income['AMOUNT'].sum()
 
     # Sort categories by most expensive
     categories_unsorted = []
@@ -133,20 +125,33 @@ def main():
         categories_unsorted.append([category,group_cost])
     categories_sorted = sorted(categories_unsorted, key=lambda x: x[1], reverse = False)
 
-    # Export data to csv
-    file_path_export_csv = os.path.join(parent_path,'Outputs','Sorted_Transactions_' + date + '.csv')
-    df.to_csv(file_path_export_csv, index=False)
+    # Create a DataFrame
+    max_len = max(len(expenses_categories), len(income_categories))
+    expenses_categories.extend([None] * (max_len - len(expenses_categories)))
+    income_categories.extend([None] * (max_len - len(income_categories)))
+    df_categories = pd.DataFrame({
+        "Expenses": expenses_categories,
+        "Income": income_categories
+    })
 
-    if verbose:
+    # Export data to csv
+    file_path_sorted_transactions = os.path.join(parent_path,'Outputs','Sorted_Transactions_' + date + '.csv')
+    file_path_categories = os.path.join(parent_path,'Outputs','Categories.csv')
+    df.to_csv(file_path_sorted_transactions, index=False)
+    df_categories.to_csv(file_path_categories, index=False)
+
+    # Command line output
+    if args.verbose:
         split_1 = '***************************************************'
         split_2 = '---------------------------------------------------'
         split_3 = '==================================================='
         print(f'\n\n\n{split_1*3}\n{split_2*3}\nSTATEMENT ANALYSIS: {year}-{month}\n{split_2*3}\n{split_1*3}\n')
         for category, group_cost in categories_sorted:
             grouped_transactions = df[df['CATEGORY'] == category]
-            if category != 'Income':
-                print(f'''\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   
-                      {group_cost/total_expenses*100:0.2f}% Total Costs   \n{split_2*3}''')
+            if category in expenses_categories:
+                print(f'''\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   {group_cost/total_expenses*100:0.2f}% Total Expenses   \n{split_2*3}''')
+            elif category in income_categories:
+                print(f'\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   {group_cost/total_income*100:0.2f}% Total Income   \n{split_2*3}')
             else:
                 print(f'\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   \n{split_2*3}')
             print(grouped_transactions.iloc[:,:4].to_string(index=False,max_colwidth=114,justify='justify-all',col_space=[15,15,100,20]))
@@ -158,7 +163,18 @@ def main():
         print(f'\n\n\n\n\n{split_3*3}\nNet Gain/Loss for {year}-{month}:  ${net_gain:0.2f}\n{split_3*3}\n')
 
     # Status message
-    print(f'\nSuccess! Transactions have been sorted to\n{file_path_export_csv}\n\n')
+    print('\n\nSuccess!')
+    print(f'\nTransactions have been sorted to\n\t{file_path_sorted_transactions}')
+    print(f'\nCategories have been sorted to\n\t{file_path_categories}\n\n')
 
+#==================================================================================================================================================================================================
+#==================================================================================================================================================================================================
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Sort transactions for selected month and year.')
+    parser.add_argument('--month', required=True, type=str, help='Selected month')
+    parser.add_argument('--year', required=True, type=str, help='Selected year')
+    parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose mode')
+
+    args = parser.parse_args()
+
+    main(args)
