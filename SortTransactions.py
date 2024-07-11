@@ -154,7 +154,8 @@ def main(args):
                 print(f'\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   {group_cost/total_income*100:0.2f}% Total Income   \n{split_2*3}')
             else:
                 print(f'\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   \n{split_2*3}')
-            print(grouped_transactions.iloc[:,:4].to_string(index=False,max_colwidth=114,justify='justify-all',col_space=[15,15,100,20]))
+            category_spaces = [15,15,100,20]
+            print(grouped_transactions.iloc[:,:4].to_string(index=False,max_colwidth=max(category_spaces),justify='justify-all',col_space=category_spaces))
 
         # Print net gain/loss for time period
         net_gain = df.values[:,1].sum()
