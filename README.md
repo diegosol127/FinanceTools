@@ -31,6 +31,7 @@ This set of tools lets you view and interact with your transactions. With it, yo
 - [x] Update json file names so they are all preceded by `income_` or `expenses_`
 - [x] Create income categories to consider account variety (employment, retirement fund, HSA, etc.)
 - [x] Make Excel read the categories from the json files directly
+- [ ] Change XLSM macro to update categories table after running calculate macro
 - [ ] Update expense categories (check out potential categories below) and include descriptions in the json files
 
 ### 3. Use Excel for manual CSV file updates
