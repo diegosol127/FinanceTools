@@ -40,8 +40,21 @@ def parse_Optum(file_path):
     df.drop(3, axis=1, inplace=True)
     df = df[df.columns[[0,2,1]]]
     df.rename(columns={0: 'DATE', 2: 'AMOUNT', 1: 'DESCRIPTION'}, inplace=True)
-    df['AMOUNT'] = df['AMOUNT'].str.strip('$').astype(float) 
+    df['AMOUNT'] = df['AMOUNT'].str.strip('$').astype(float)
     df['INSTITUTION'] = 'Optum'
+    return df
+
+def parse_SoFi(file_path):
+    # Parse CSV files in the format given by SoFi
+    df = pd.read_csv(file_path, header=None)
+    df.drop(0, axis=0, inplace=True)
+    df.drop(2, axis=1, inplace=True)
+    df.drop(4, axis=1, inplace=True)
+    df.drop(5, axis=1, inplace=True)
+    df = df[df.columns[[0,2,1]]]
+    df.rename(columns={0: 'DATE', 3: 'AMOUNT', 1: 'DESCRIPTION'}, inplace=True)
+    df['AMOUNT'] = df['AMOUNT'].astype(float)
+    df['INSTITUTION'] = 'SoFi'
     return df
 
 def parse_WellsFargo(file_path):
@@ -58,7 +71,8 @@ def parse_file(file_path):
     # Return a data parser based on the name of the institution
     parsers = {
         'Optum': parse_Optum,
-        'WellsFargo': parse_WellsFargo
+        'WellsFargo': parse_WellsFargo,
+        'SoFi': parse_SoFi
     }
 
     institution = os.path.basename(os.path.dirname(file_path))

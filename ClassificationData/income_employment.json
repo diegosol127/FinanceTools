@@ -3,6 +3,10 @@
         "EMPLOYER DIR DEP",
         "MONTHLY DIVIDENDS",
         "CASHED CHECK",
-        "Interest Payment"
+        "Interest Payment",
+        "Bank Deposit",
+        "From Checking",
+        "To Savings",
+        "Interest earned"
     ]
 }
