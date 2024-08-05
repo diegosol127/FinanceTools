@@ -33,6 +33,16 @@ def group_transactions(description, classification_dict):
                 return category
     return '***Unlabelled***'
 
+def parse_AmericanExpress(file_path):
+    # Parse CSV files in the format given by American Express
+    df = pd.read_csv(file_path, header=None)
+    df.drop(0, axis=0, inplace=True)
+    df = df[df.columns[[0,2,1]]]
+    df.rename(columns={0: 'DATE', 2: 'AMOUNT', 1: 'DESCRIPTION'}, inplace=True)
+    df['AMOUNT'] = -df['AMOUNT'].astype(float)
+    df['INSTITUTION'] = 'AmericanExpress'
+    return df
+
 def parse_Optum(file_path):
     # Parse CSV files in the format given by Optum
     df = pd.read_csv(file_path, header=None)
@@ -70,6 +80,7 @@ def parse_WellsFargo(file_path):
 def parse_file(file_path):
     # Return a data parser based on the name of the institution
     parsers = {
+        'AmericanExpress': parse_AmericanExpress,
         'Optum': parse_Optum,
         'WellsFargo': parse_WellsFargo,
         'SoFi': parse_SoFi

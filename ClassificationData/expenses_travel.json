@@ -3,6 +3,8 @@
         "AIRLINE FLT",
         "TAXI CAB",
         "SUBWAY FEE",
-        "LOCAL TRAIN"
+        "LOCAL TRAIN",
+        "Flight ticket",
+        "Airline fee"
     ]
 }

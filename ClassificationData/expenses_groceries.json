@@ -2,6 +2,9 @@
     "Groceries": [
         "SUPERMARKET",
         "GROCERY STORE",
-        "FRESH FRUIT"
+        "FRESH FRUIT",
+        "Food",
+        "Shopping",
+        "Groceries"
     ]
 }
