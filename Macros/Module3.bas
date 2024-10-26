@@ -1,5 +1,9 @@
 Attribute VB_Name = "Module3"
 Sub ImportCategoriesFromCSVAndCreateNamedRange()
+' --------------------------------------------------
+' Import categories from "Outputs/Categories.csv"
+' --------------------------------------------------
+
     Dim ws As Worksheet
     Dim csvFilePath As String
     Dim lastRow As Long
@@ -35,7 +39,7 @@ Sub ImportCategoriesFromCSVAndCreateNamedRange()
     End With
 
     ' Find the last row with data in column A
-    lastRow = importSheet.Cells(importSheet.Rows.Count, "A").End(xlUp).Row
+    lastRow = importSheet.Cells(importSheet.Rows.Count, "A").End(xlUp).row
     
     ' Set the ranges for the categories
     Set expensesRange = importSheet.Range("A2:A" & lastRow)

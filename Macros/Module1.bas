@@ -1,5 +1,9 @@
 Attribute VB_Name = "Module1"
 Sub ExportAllVBAComponents()
+' --------------------------------------------------
+' Save VBA files as files in source directory
+' --------------------------------------------------
+
     Dim vbComponent As Object
     Dim exportPath As String
     Dim fileName As String
@@ -39,6 +43,6 @@ Sub ExportAllVBAComponents()
         End Select
     Next vbComponent
 
-    MsgBox "VBA components exported successfully to " & exportPath & "."
+    ' MsgBox "VBA components exported successfully to " & exportPath & "."
 End Sub
 

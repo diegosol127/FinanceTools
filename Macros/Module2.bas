@@ -1,16 +1,69 @@
 Attribute VB_Name = "Module2"
 Sub ImportCSV()
+    ' --------------------------------------------------
+    ' Import data from selected CSV file in the
+    ' "Outputs" folder to the "Income and Expenses"
+    ' sheet in BudgetTracker.xlsm
+    ' --------------------------------------------------
+
     Dim ws As Worksheet
     Dim outputFolderDir As String
     Dim csvFilePath As String
+    Dim tempFilePath As String
     Dim csvFullPath As String
     Dim csvData As Variant
     Dim lastRow As Long
     Dim i As Long, j As Long
+    Dim year_month As String
     
     ' Set your worksheet where you want to populate the data
     Set ws = ThisWorkbook.Sheets("Income and Expenses")
     
+    ' Define output folder and year_month variable
+    outputFolderDir = ThisWorkbook.Path & "\Outputs"
+    year_month = Evaluate("year_month")
+    
+    ' Check for a CSV file with year_month in its name
+    csvFilePath = ""
+    tempFilePath = Dir(outputFolderDir & "\*" & year_month & "*.csv")
+    
+    Do While tempFilePath <> ""
+        ' Check if the file contains "mod" and prioritize it
+        If InStr(1, tempFilePath, "mod", vbTextCompare) > 0 Then
+            csvFilePath = tempFilePath
+            Exit Do
+        ElseIf csvFilePath = "" Then
+            csvFilePath = tempFilePath
+        End If
+        tempFilePath = Dir
+    Loop
+    
+    ' If no matching file is found, run the Python script
+    If csvFilePath = "" Then
+        RunPythonScriptWithArgs
+        csvFilePath = Dir(outputFolderDir & "\*" & year_month & "*.csv")
+    End If
+    
+    ' If no matching file is found, run the Python script
+    If csvFilePath = "" Then
+        RunPythonScriptWithArgs
+    
+        ' Wait until the CSV file is generated, with a timeout of 10 seconds
+        Dim startTime As Single
+        startTime = Timer ' Record the start time
+    
+        Do
+            Application.Wait Now + TimeValue("0:00:01") ' Pause for 1 second
+            csvFilePath = Dir(outputFolderDir & "\*" & year_month & "*.csv")
+        
+            ' Exit loop after 10 seconds if file is still not found
+            If Timer - startTime > 10 Then
+                MsgBox "Error: File generation timed out after 10 seconds.", vbExclamation
+                Exit Sub
+            End If
+        Loop While csvFilePath = ""
+    End If
+
     ' Clear any existing table
     On Error Resume Next
     Set tbl = ws.ListObjects("Transactions")
@@ -19,7 +72,7 @@ Sub ImportCSV()
         Dim maxRow As Long
         Dim clearRange As Range
         maxRow = ws.Rows.Count
-        Set clearRange = ws.Range("B3:F" & maxRow)
+        Set clearRange = ws.Range("B6:F" & maxRow)
         ' Delete the table
         tbl.Delete
         ' Fill the area where the table used to be with color white
@@ -28,21 +81,21 @@ Sub ImportCSV()
     End If
     On Error GoTo 0
     
-    ' Get CSV file
-    outputFolderDir = ThisWorkbook.Path & "\Outputs"
-    csvFullPath = GetFilePath(outputFolderDir, Evaluate("year_month"))
+    ' Get CSV file path after possibly generating it
+    csvFullPath = outputFolderDir & "\" & csvFilePath
+    
     ' Read the CSV file
     csvData = ReadCSVFile(csvFullPath)
     
     ' Check if the data is read correctly
     If Not IsArray(csvData) Then
         MsgBox "Failed to import budget data. Make sure a CSV file exists for the selected MONTH and YEAR. " & _
-            "If the file exists, inpect the format.", vbExclamation
+            "If the file exists, inspect the format.", vbExclamation
         Exit Sub
     End If
     
     ' Set the first row in the worksheet to start populating the data
-    startRow = 4
+    startRow = 7
     
     ' Populate the data into the worksheet
     For i = LBound(csvData) To UBound(csvData)
@@ -73,10 +126,10 @@ Sub CreateTransactionTable()
     Set ws = ThisWorkbook.Sheets("Income and Expenses")
     
     ' Find the last populated row in column B
-    lastRow = ws.Cells(ws.Rows.Count, "B").End(xlUp).Row
+    lastRow = ws.Cells(ws.Rows.Count, "B").End(xlUp).row
     
     ' Define the range for the table including headers
-    Set tblRange = ws.Range("B4:F" & lastRow) ' Assuming columns B to E starting on row 4
+    Set tblRange = ws.Range("B7:F" & lastRow) ' Assuming columns B to E starting on row 7
     
     ' Clear the background color of the table range to preserve table style and colors
     tblRange.Interior.ColorIndex = xlNone

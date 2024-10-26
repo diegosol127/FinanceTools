@@ -8,8 +8,8 @@ Sub RunPythonScriptWithArgs()
     Dim verbose As Boolean
 
     ' Retrieve the month and year from named ranges
-    month = Evaluate("current_month").Value
-    year = Evaluate("current_year").Value
+    month = Evaluate("current_month")
+    year = Evaluate("current_year")
     
     ' Set verbose mode
     verbose = False ' Change this to False if you don't want verbose mode
