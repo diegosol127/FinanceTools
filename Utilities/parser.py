@@ -7,7 +7,7 @@ class Parser:
     def __init__(self) -> None:
         pass
     
-    def parse_file(self, file_path):
+    def parse_file(self, file_path: str) -> pd.DataFrame:
         # Return a data parser based on the name of the institution
         parsers = {
             'AmericanExpress': self.parse_AmericanExpress,

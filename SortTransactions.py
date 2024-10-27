@@ -8,6 +8,7 @@ import pandas as pd
 
 # Import custom libraries
 from Utilities.parser import Parser
+from Utilities.interface import Interface
 
 def get_classification_info(directory):
     # Get a list of all JSON files in a given directory
@@ -112,27 +113,15 @@ def main(args):
 
     # Command line output
     if args.verbose:
-        split_1 = '***************************************************'
-        split_2 = '---------------------------------------------------'
-        split_3 = '==================================================='
-        print(f'\n\n\n{split_1*3}\n{split_2*3}\nSTATEMENT ANALYSIS: {year}-{month}\n{split_2*3}\n{split_1*3}\n')
-        for category, group_cost in categories_sorted:
-            grouped_transactions = df[df['CATEGORY'] == category]
-            if category in expenses_categories:
-                print(f'''\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   {group_cost/total_expenses*100:0.2f}% Total Expenses   \n{split_2*3}''')
-            elif category in income_categories:
-                print(f'\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   |   {group_cost/total_income*100:0.2f}% Total Income   \n{split_2*3}')
-            else:
-                print(f'\n\n\n{split_3*3}\n{category}:   ${group_cost:0.2f}   \n{split_2*3}')
-            category_spaces = [15,15,100,20]
-            print(grouped_transactions.iloc[:,:4].to_string(index=False,max_colwidth=max(category_spaces),justify='justify-all',col_space=category_spaces))
-
-        # Print net gain/loss for time period
-        net_gain = df.values[:,1].sum()
-        print(f'\n\n\n\n\n{split_2*3}\nTotal Expenses for {year}-{month}: ${total_expenses:0.2f}\n{split_2*3}')
-        print(f'Total Income for {year}-{month}:   ${total_income:0.2f}\n{split_2*3}')
-        print(f'\n\n\n\n\n{split_3*3}\nNet Gain/Loss for {year}-{month}:  ${net_gain:0.2f}\n{split_3*3}\n')
-
+        interface = Interface()
+        interface.print_sorted_transactions(args,
+                                            df,
+                                            categories_sorted,
+                                            income_categories,
+                                            expenses_categories,
+                                            total_income,
+                                            total_expenses)
+    
     # Status message
     print('\n\nSuccess!')
     print(f'\nTransactions have been sorted to\n\t{file_path_sorted_transactions}')
