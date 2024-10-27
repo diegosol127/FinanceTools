@@ -31,14 +31,15 @@ This set of tools lets you view and interact with your transactions. With it, yo
 - [x] Update json file names so they are all preceded by `income_` or `expenses_`
 - [x] Create income categories to consider account variety (employment, retirement fund, HSA, etc.)
 - [x] Make Excel read the categories from the json files directly
-- [ ] Change XLSM macro to update categories table after running calculate macro
+- [x] Change XLSM macro to update categories table after running calculate macro
 - [ ] Update expense categories (check out potential categories below) and include descriptions in the json files
+- [ ] Remove commas from transaction descriptions
 
 ### 3. Use Excel for manual CSV file updates
 
-- [ ] Import sorted data to Excel, then make edits locally
-- [ ] Make a conditional format that easily identifies transactions that have yet to be categorized ("unlabelled")
-- [ ] Add functionality to save CSV files from Excel macro
+- [x] Import sorted data to Excel, then make edits locally
+- [x] Make a conditional format that easily identifies transactions that have yet to be categorized ("unlabelled")
+- [x] Add functionality to save CSV files from Excel macro
 
 ### 4. Smart dashboard
 
@@ -59,6 +60,7 @@ This set of tools lets you view and interact with your transactions. With it, yo
 ### 7. Improve code structure
 
 - [ ] Consider making tools in object-oriented format
+- [ ] Organize transactions by year to minimize number of loose files
 - [ ] Create a folder for utilities that can be used to import classes and functions in the main script
 - [ ] Conider implementing an arg parser for streamlined debugging
 
