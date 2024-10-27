@@ -1,3 +1,4 @@
 Date,Description,Type,Amount,Current balance,Status
 1/31/2024,Interest earned,Interest Earned,0.12,100.12,Posted
-1/24/2024,From Checking,Deposit,100,100,Posted
+1/21/2024,To House Vault,Deposit,-100,0,Posted
+1/15/2024,From Checking,Deposit,100,100,Posted
