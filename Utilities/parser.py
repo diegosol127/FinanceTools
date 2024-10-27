@@ -18,7 +18,9 @@ class Parser:
 
         institution = os.path.basename(os.path.dirname(os.path.dirname(file_path)))
         if institution in parsers:
-            return parsers[institution](file_path)
+            df = parsers[institution](file_path)
+            df['DESCRIPTION'] = df['DESCRIPTION'].str.replace(',','')
+            return df
         else:
             raise ValueError(f"No parser available for institution: {institution}")
     
@@ -61,7 +63,6 @@ class Parser:
         df = pd.read_csv(file_path, header=None)
         df.drop([2,3],axis=1, inplace=True)
         df.rename(columns={0: 'DATE', 1: 'AMOUNT', 4: 'DESCRIPTION'}, inplace=True)
-        df['DESCRIPTION'] = df['DESCRIPTION'].str.replace(',','')
         df['DATE'] = pd.to_datetime(df['DATE'], format='%m/%d/%Y').dt.strftime('%Y-%m-%d')
         df['INSTITUTION'] = 'Wells Fargo'
         return df
