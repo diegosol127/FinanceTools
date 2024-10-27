@@ -16,7 +16,7 @@ class Parser:
             'SoFi': self.parse_SoFi
         }
 
-        institution = os.path.basename(os.path.dirname(file_path))
+        institution = os.path.basename(os.path.dirname(os.path.dirname(file_path)))
         if institution in parsers:
             return parsers[institution](file_path)
         else:

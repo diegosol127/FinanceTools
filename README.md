@@ -60,7 +60,7 @@ This set of tools lets you view and interact with your transactions. With it, yo
 ### 7. Improve code structure
 
 - [ ] Consider making tools in object-oriented format
-- [ ] Organize transactions by year to minimize number of loose files
+- [x] Organize transactions by year to minimize number of loose files
 - [ ] Create a folder for utilities that can be used to import classes and functions in the main script
 - [ ] Conider implementing an arg parser for streamlined debugging
 
