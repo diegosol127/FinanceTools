@@ -106,6 +106,9 @@ Sub ImportCSV()
     
     ' Create a table from the CSV data
     CreateTransactionTable
+    
+    ' Recalculate cells
+    Application.Calculate
 End Sub
 
 
@@ -147,7 +150,7 @@ Sub CreateTransactionTable()
     tbl.ListColumns("Amount").DataBodyRange.FormatConditions.Add Type:=xlCellValue, Operator:=xlLess, Formula1:="0"
     tbl.ListColumns("Amount").DataBodyRange.FormatConditions(tbl.ListColumns("Amount").DataBodyRange.FormatConditions.Count).Font.Color = RGB(255, 0, 0)
     ' Remove the filter buttons
-    tbl.ShowAutoFilter = False
+    tbl.ShowAutoFilter = True
     ' Make header row bold and centered
     tbl.HeaderRowRange.Font.Bold = True
     tbl.HeaderRowRange.HorizontalAlignment = xlCenter
