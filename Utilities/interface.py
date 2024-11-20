@@ -5,7 +5,7 @@ import pandas as pd
 class Interface:
     def __init__(self) -> None:
         pass
-
+    
     def print_sorted_transactions(self,
                                   mainArgs: argparse.Namespace,
                                   df: pd.DataFrame,
@@ -13,7 +13,8 @@ class Interface:
                                   income_categories: list,
                                   expenses_categories: list,
                                   total_income: float,
-                                  total_expenses: float) -> None:
+                                  total_expenses: float
+                                  ) -> None:
         month = mainArgs.month
         year = mainArgs.year
         split_1 = '***************************************************'
@@ -36,3 +37,12 @@ class Interface:
         print(f'\n\n\n\n\n{split_2*3}\nTotal Expenses for {year}-{month}: ${total_expenses:0.2f}\n{split_2*3}')
         print(f'Total Income for {year}-{month}:   ${total_income:0.2f}\n{split_2*3}')
         print(f'\n\n\n\n\n{split_3*3}\nNet Gain/Loss for {year}-{month}:  ${net_gain:0.2f}\n{split_3*3}\n')
+
+    def print_status_message(self,
+                             file_path_sorted_transactions: str,
+                             file_path_categories: str
+                             ) -> None:
+        print('\n\nSuccess!')
+        print(f'\nTransactions have been sorted to\n\t{file_path_sorted_transactions}')
+        print(f'\nCategories have been sorted to\n\t{file_path_categories}\n\n')
+
