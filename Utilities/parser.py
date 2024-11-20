@@ -90,7 +90,7 @@ class JSON:
                 self.classification_dict.update(data)
                 if 'expenses' in json_file:
                     self.expenses_list.append(list(data.keys())[0])
-                else:
+                elif 'income' in json_file:
                     self.income_list.append(list(data.keys())[0])
 
     # Get classification dictionary

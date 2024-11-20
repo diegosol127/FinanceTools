@@ -43,7 +43,7 @@ def custom_sort_key(item):
     category, cost = item
     if category == '***Unlabeled***':
         return (-float('inf'), cost)  # Push to top
-    elif category == 'Internal Transactions':
+    elif category == '***Internal Transactions***':
         return (float('inf'), cost)   # Push to bottom
     else:
         return (cost, )  # Sort by cost for others
@@ -88,8 +88,7 @@ def main(args):
     # Sort categories by most expensive
     categories_unsorted = []
     for category in sorted(df['CATEGORY'].unique()):
-        grouped_transactions = df[df['CATEGORY'] == category]
-        group_cost = grouped_transactions.values[:,1].sum()
+        group_cost = df[df['CATEGORY'] == category]['AMOUNT'].sum()
         categories_unsorted.append([category,group_cost])
     categories_sorted = sorted(categories_unsorted, key=custom_sort_key)
 

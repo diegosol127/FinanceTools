@@ -33,7 +33,7 @@ class Interface:
             print(grouped_transactions.iloc[:,:4].to_string(index=False,max_colwidth=max(category_spaces),justify='justify-all',col_space=category_spaces))
 
         # Print net gain/loss for time period
-        net_gain = df.values[:,1].sum()
+        net_gain = total_income + total_expenses
         print(f'\n\n\n\n\n{split_2*3}\nTotal Expenses for {year}-{month}: ${total_expenses:0.2f}\n{split_2*3}')
         print(f'Total Income for {year}-{month}:   ${total_income:0.2f}\n{split_2*3}')
         print(f'\n\n\n\n\n{split_3*3}\nNet Gain/Loss for {year}-{month}:  ${net_gain:0.2f}\n{split_3*3}\n')
