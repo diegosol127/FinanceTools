@@ -1,58 +1,39 @@
 # Import Python libraries
 import argparse
-import json
 import os
 import sys
 import numpy as np
 import pandas as pd
 
 # Import custom libraries
-from Utilities.parser import Parser
+from Utilities.parser import CSV
+from Utilities.parser import JSON
 from Utilities.interface import Interface
 
-def get_classification_info(directory):
-    # Get a list of all JSON files in a given directory
-    classification_dict = {}
-    expenses_list = []
-    income_list = []
-    all_files = os.listdir(directory)
-    json_files = [file for file in all_files if file.endswith('.json')]
-    for json_file in json_files:
-        file_path = os.path.join(directory, json_file)
-        with open(file_path, 'r') as f:
-            data = json.load(f)
-            classification_dict.update(data)
-            if 'expenses' in json_file:
-                expenses_list.append(list(data.keys())[0])
-            elif 'income' in json_file:
-                income_list.append(list(data.keys())[0])
+#===================================================================================================
 
-    return classification_dict, expenses_list, income_list
-
+# Identify a category for the given transaction
 def group_transactions(description, classification_dict):
-    # Identify a category for the given transaction
     for category, keywords in classification_dict.items():
         for keyword in keywords:
             if keyword.upper() in description.upper():
                 return category
     return '***Unlabeled***'
 
+# Extract the csv data from the selected directory
 def extract_data(directory,date):
-    # Extract the csv data from the selected directory
     df_combined = pd.DataFrame()
-
     for root, dirs, files in os.walk(directory):
         for file in files:
             if date in file:
                 file_path = os.path.join(root, file)
                 try:
-                    parser = Parser()
-                    df = parser.parse_file(file_path)
+                    csv_parser = CSV()
+                    df = csv_parser.parse_file(file_path)
                     df_combined = pd.concat([df_combined,df],axis=0, ignore_index=True)
                     print(f"Processed {file_path}")
                 except ValueError as e:
                     print(e)
-
     df_combined.sort_values(by='DATE', inplace=True)
     df_combined.reset_index(drop=True, inplace=True)
     return df_combined
@@ -67,8 +48,10 @@ def custom_sort_key(item):
     else:
         return (cost, )  # Sort by cost for others
 
-#=================================================================================================
+#===================================================================================================
+
 def main(args):
+
     # Change working directory
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -85,7 +68,11 @@ def main(args):
 
     # Import categories and keywords from json files
     json_dir = os.path.join(parent_path,'ClassificationData')
-    categories_keywords, expenses_categories, income_categories = get_classification_info(json_dir)
+    json_parser = JSON()
+    json_parser.parse_files(json_dir)
+    categories_keywords = json_parser.get_classification_dict()
+    expenses_categories = json_parser.get_expense_categories()
+    income_categories = json_parser.get_income_categories()
 
     # Sort transactions into their respective categories
     df['CATEGORY'] = df['DESCRIPTION'].apply(lambda x: group_transactions(x, categories_keywords))
@@ -116,14 +103,16 @@ def main(args):
     })
 
     # Export data to csv
-    file_path_sorted_transactions = os.path.join(parent_path,'Outputs','Sorted_Transactions_' + date + '.csv')
+    file_path_sorted_transactions = os.path.join(parent_path,
+                                                 'Outputs',
+                                                 'Sorted_Transactions_' + date + '.csv')
     file_path_categories = os.path.join(parent_path,'Outputs','Categories.csv')
     df.to_csv(file_path_sorted_transactions, index=False)
     df_categories.to_csv(file_path_categories, index=False)
 
     # Command line output
+    interface = Interface()
     if args.verbose:
-        interface = Interface()
         interface.print_sorted_transactions(args,
                                             df,
                                             categories_sorted,
@@ -133,12 +122,11 @@ def main(args):
                                             total_expenses)
     
     # Status message
-    print('\n\nSuccess!')
-    print(f'\nTransactions have been sorted to\n\t{file_path_sorted_transactions}')
-    print(f'\nCategories have been sorted to\n\t{file_path_categories}\n\n')
+    interface.print_status_message(file_path_sorted_transactions,
+                                   file_path_categories)
+    
+#===================================================================================================
 
-#==================================================================================================================================================================================================
-#==================================================================================================================================================================================================
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Sort transactions for selected month and year.')
     parser.add_argument('--month', required=True, type=str, help='Selected month')
