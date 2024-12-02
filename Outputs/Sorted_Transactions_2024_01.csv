@@ -1,45 +1,45 @@
 DATE,AMOUNT,DESCRIPTION,INSTITUTION,CATEGORY
 1/15/2024,100.0,From Checking,SoFi,Employment
-1/19/2024,-15.56,FOOD,AmericanExpress,Groceries
-1/20/2024,-129.13,Shopping,AmericanExpress,Groceries
 1/21/2024,100.0,Bank Deposit,SoFi,Employment
 1/21/2024,-100.0,To House Vault,SoFi,***Internal Transactions***
-1/21/2024,20.0,Cash back,AmericanExpress,Employment
-1/21/2024,-212.23,Flight ticket,AmericanExpress,Travel Expenses
 1/24/2024,-50.0,To Savings,SoFi,Employment
-1/27/2024,-21.63,Restaurant,AmericanExpress,Restaurants
-1/28/2024,-40.0,Airline fee,AmericanExpress,Travel Expenses
-1/30/2024,7.0,AMEX DUNKIN' CREDIT,AmericanExpress,***Unlabeled***
-1/30/2024,-7.3,DUNKIN #362446 3624 ALBUQUERQUE         NM,AmericanExpress,Restaurants
-1/30/2024,-41.01,Groceries,AmericanExpress,Groceries
 1/31/2024,0.12,Interest earned,SoFi,Employment
 2024-01-01,-11.75,movie club fee,Wells Fargo,Memberships and Subscriptions
 2024-01-01,-44.93,HAIRCUT,Wells Fargo,Personal Expenses
-2024-01-01,38.46,Employer Contribution HSA,Optum,HSA
-2024-01-01,57.69,Individual Contribution HSA,Optum,HSA
 2024-01-01,-1000.0,MONTHLY RENT,Wells Fargo,Rent and Utilities
+2024-01-01,57.69,Individual Contribution HSA,Optum,HSA
+2024-01-01,38.46,Employer Contribution HSA,Optum,HSA
 2024-01-02,-66.0,CLOTHES,Wells Fargo,Personal Expenses
 2024-01-08,-158.0,GROCERY STORE,Wells Fargo,Groceries
 2024-01-09,1000.0,Employer DIR DEP,Wells Fargo,Employment
 2024-01-09,500.0,MONTHLY DIVIDENDS,Wells Fargo,Employment
 2024-01-13,-50.94,GYM MEMBERSHIP,Wells Fargo,Memberships and Subscriptions
-2024-01-14,57.69,Individual Contribution HSA,Optum,HSA
-2024-01-14,38.46,Employer Contribution HSA,Optum,HSA
-2024-01-14,-63.0,BOOK STORE,Wells Fargo,Personal Expenses
 2024-01-14,-152.95,SUPERMARKET,Wells Fargo,Groceries
+2024-01-14,38.46,Employer Contribution HSA,Optum,HSA
+2024-01-14,57.69,Individual Contribution HSA,Optum,HSA
+2024-01-14,-63.0,BOOK STORE,Wells Fargo,Personal Expenses
 2024-01-19,-11.83,PHARMACY Feb 19 202,Optum,Medical Expenses
+2024-01-19,-15.56,FOOD,AmericanExpress,Groceries
+2024-01-20,-129.13,Shopping,AmericanExpress,Groceries
 2024-01-20,-60.0,dental expenses,Wells Fargo,Medical Expenses
-2024-01-22,-51.07,ITALIAN FOOD,Wells Fargo,Groceries
+2024-01-21,-212.23,Flight ticket,AmericanExpress,Travel Expenses
+2024-01-21,20.0,Cash back,AmericanExpress,Employment
 2024-01-22,1000.0,Employer DIR DEP,Wells Fargo,Employment
-2024-01-24,-500.0,AIRLINE FLT,Wells Fargo,Travel Expenses
+2024-01-22,-51.07,ITALIAN FOOD,Wells Fargo,Groceries
 2024-01-24,-45.0,USA GASOLINE,Wells Fargo,Gas
+2024-01-24,-500.0,AIRLINE FLT,Wells Fargo,Travel Expenses
 2024-01-24,200.0,CASHED CHECK,Wells Fargo,Employment
+2024-01-27,-21.63,Restaurant,AmericanExpress,Restaurants
+2024-01-28,-40.0,Airline fee,AmericanExpress,Travel Expenses
 2024-01-28,38.46,Employer Contribution HSA,Optum,HSA
 2024-01-28,57.69,Individual Contribution HSA,Optum,HSA
 2024-01-29,0.02,Interest Payment,Optum,Employment
-2024-01-29,-106.65,PHARMACY Feb 29 202,Optum,Medical Expenses
 2024-01-29,-0.95,Service Charge,Optum,Personal Expenses
 2024-01-29,-11.29,PHARMACY Feb 29 202,Optum,Medical Expenses
+2024-01-29,-106.65,PHARMACY Feb 29 202,Optum,Medical Expenses
 2024-01-30,-66.97,CAR MAINTAINENCE FEE,Wells Fargo,Car Maintainence and Insurance
+2024-01-30,-41.01,Groceries,AmericanExpress,Groceries
 2024-01-30,-21.5,FRESH FRUIT,Wells Fargo,Groceries
+2024-01-30,-7.3,DUNKIN #362446 3624 ALBUQUERQUE         NM,AmericanExpress,Restaurants
 2024-01-30,0.42,INTEREST PAYMENT,Wells Fargo,Employment
+2024-01-30,7.0,AMEX DUNKIN' CREDIT,AmericanExpress,***Unlabeled***
