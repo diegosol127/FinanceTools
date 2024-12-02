@@ -33,6 +33,7 @@ class CSV:
         df.drop(0, axis=0, inplace=True)
         df = df[df.columns[[0,2,1]]]
         df.rename(columns={0: 'DATE', 2: 'AMOUNT', 1: 'DESCRIPTION'}, inplace=True)
+        df['DATE'] = pd.to_datetime(df['DATE']).dt.strftime('%Y-%m-%d')
         df['AMOUNT'] = -df['AMOUNT'].astype(float)
         df['INSTITUTION'] = 'AmericanExpress'
         return df
