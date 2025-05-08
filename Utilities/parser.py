@@ -14,6 +14,7 @@ class CSV:
     def parse_file(self, file_path: str) -> pd.DataFrame:
         parsers = {
             'AmericanExpress': self.parse_AmericanExpress,
+            'Fidelity': self.parse_Fidelity,
             'Optum': self.parse_Optum,
             'WellsFargo': self.parse_WellsFargo,
             'SoFi': self.parse_SoFi
@@ -25,7 +26,7 @@ class CSV:
             df['DESCRIPTION'] = df['DESCRIPTION'].str.replace(',','')
             return df
         else:
-            raise ValueError(f"No parser available for institution: {institution}")
+            raise ValueError(f"No parser available for institution: {institution}")  
     
     # Parse CSV files in the format given by American Express
     def parse_AmericanExpress(self, file_path) -> pd.DataFrame:
@@ -36,6 +37,26 @@ class CSV:
         df['DATE'] = pd.to_datetime(df['DATE']).dt.strftime('%Y-%m-%d')
         df['AMOUNT'] = -df['AMOUNT'].astype(float)
         df['INSTITUTION'] = 'AmericanExpress'
+        return df
+
+    # Parse CSV files in the format given by Fidelity
+    def parse_Fidelity(self, file_path) -> pd.DataFrame:
+        if str.__contains__(file_path,'401k'):
+            df = pd.read_csv(file_path, header=None)
+            df.drop(0, axis=0, inplace=True)
+            df = df[df.columns[[0,4,2]]]
+            df.rename(columns={0: 'DATE', 4: 'AMOUNT', 2: 'DESCRIPTION'}, inplace=True)
+            df = df.dropna(axis=0)
+        elif str.__contains__(file_path,'ROTH_IRA'):
+            df = pd.read_csv(file_path, header=None)
+            df.drop(0, axis=0, inplace=True)
+            df = df[df.columns[[0,10,1]]]
+            df.rename(columns={0: 'DATE', 10: 'AMOUNT', 1: 'DESCRIPTION'}, inplace=True)
+            df = df.dropna(axis=0)
+            df = df[df['DESCRIPTION'].str.contains('CONTRIBUTION')]
+        df['DATE'] = pd.to_datetime(df['DATE']).dt.strftime('%Y-%m-%d')
+        df['AMOUNT'] = df['AMOUNT'].astype(float)
+        df['INSTITUTION'] = 'Fidelity'
         return df
 
     # Parse CSV files in the format given by Optum
