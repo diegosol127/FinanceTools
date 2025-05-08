@@ -1,0 +1,11 @@
+Transaction Date,Post Date,Description,Category,Type,Amount,Memo
+1/28/2024,1/28/2024,Pay Credit Card,,Payment,230.3,
+1/21/2024,1/22/2024,Burrito,Food & Drink,Sale,-5.6,
+1/20/2024,1/22/2024,Car gas,Gas,Sale,-23.33,
+1/21/2024,1/22/2024,Shell gass,Gas,Sale,-22.21,
+1/19/2024,1/20/2024,Home supplies,Shopping,Sale,-4,
+1/18/2024,1/20/2024,Grocery store,Gas,Sale,-33.25,
+1/19/2024,1/20/2024,Pottery store,Entertainment,Sale,-17.85,
+1/18/2024,1/20/2024,Ski pass,Entertainment,Sale,-203,
+1/14/2024,1/16/2024,Transaction fee,Bills & Utilities,Sale,-18.15,
+1/14/2024,1/16/2024,Coffee shop,Professional Services,Sale,-8.13,

@@ -14,6 +14,7 @@ class CSV:
     def parse_file(self, file_path: str) -> pd.DataFrame:
         parsers = {
             'AmericanExpress': self.parse_AmericanExpress,
+            'Chase': self.parse_Chase,
             'Fidelity': self.parse_Fidelity,
             'Optum': self.parse_Optum,
             'WellsFargo': self.parse_WellsFargo,
@@ -28,7 +29,7 @@ class CSV:
         else:
             raise ValueError(f"No parser available for institution: {institution}")  
     
-    # Parse CSV files in the format given by American Express
+     # Parse CSV files in the format given by American Express
     def parse_AmericanExpress(self, file_path) -> pd.DataFrame:
         df = pd.read_csv(file_path, header=None)
         df.drop(0, axis=0, inplace=True)
@@ -37,6 +38,17 @@ class CSV:
         df['DATE'] = pd.to_datetime(df['DATE']).dt.strftime('%Y-%m-%d')
         df['AMOUNT'] = -df['AMOUNT'].astype(float)
         df['INSTITUTION'] = 'AmericanExpress'
+        return df
+
+   # Parse CSV files in the format given by Chase
+    def parse_Chase(self, file_path) -> pd.DataFrame:
+        df = pd.read_csv(file_path, header=None)
+        df.drop(0, axis=0, inplace=True)
+        df = df[df.columns[[0,5,2]]]
+        df.rename(columns={0: 'DATE', 5: 'AMOUNT', 2: 'DESCRIPTION'}, inplace=True)
+        df['DATE'] = pd.to_datetime(df['DATE']).dt.strftime('%Y-%m-%d')
+        df['AMOUNT'] = -df['AMOUNT'].astype(float)
+        df['INSTITUTION'] = 'Chase'
         return df
 
     # Parse CSV files in the format given by Fidelity
