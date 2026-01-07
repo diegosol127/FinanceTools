@@ -1,3 +1,5 @@
+# Project Structure
+
 The directoy structure of this project is broken down into folders, each one tied to a specific repository to make this project secure and easily replicable. The general file structure can be seen in the depiction below.
 
 ```bash
@@ -24,3 +26,34 @@ FinanceManager/
 ```
 
 The `repo` folder is a clone of the Git repository associated with the project. Currently, that repository is `https://github.com/diegosol127/FinanceTools` on the `dev/overhaul` branch. The purpose of the files in this repo are exclusively for ingesting, parsing, analyzing, exporting the data located in the `data` folder. At no point should any financial data flow through this repository.
+
+The `data` folder is linked to a cloud drive used for storing data for processing, exporting, and backups. OneDrive is currently being used for this storage drive, and the `data` folder points to the OneDrive directory `OneDrive\Documents\Projects\FinanceManager\data` via a symlink. This project assumes the directory for OneDrive is `~/OneDrive` for both Windows and Linux.
+
+# Setup
+
+Follow these steps to set up your environment on either Windows or Linux.
+
+## Windows
+
+Run the following commands from a powershell prompt with administative privileges. 
+
+Make the top level directory.
+```pwsh
+mkdir -p ~/Projects/FinanceManager
+```
+
+Clone the git repository using SSH.
+```pwsh
+cd FinanceManager
+git clone -b dev/overhaul git@github.com:diegosol127/FinanceTools.git repo
+```
+
+Create and symlink the data folder
+```pwsh
+mkdir data
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\Projects\FinanceManager\data" -Target "$env:USERPROFILE\OneDrive\Documents\Projects\FinanceManager\data"
+```
+
+# Future Work
+
+- [ ] Bootstrap installation and symlinking with bash scripts
