@@ -15,6 +15,7 @@ FinanceManager/
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   ├── README.md
+│   ├── run.sh
 │   └── .gitignore
 │
 └── data/                  # NOT tracked by Git (symlinked)
@@ -67,6 +68,11 @@ ln -s ~/OneDrive/FinanceManager/data ~/Projects/FinanceManager/data
 ```bash
 WINUSER=$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')
 ln -s /mnt/c/Users/$WINUSER/OneDrive/Documents/Projects/FinanceManager/data ~/Projects/FinanceManager/data
+```
+
+4. Build the docker image (assumes Docker Desktop is already installed).
+```bash
+docker build -t financemanager .
 ```
 
 # Future Work
