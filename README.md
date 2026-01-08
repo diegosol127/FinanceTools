@@ -33,25 +33,33 @@ The `data` folder is linked to a cloud drive used for storing data for processin
 
 Follow these steps to set up your environment on either Windows or Linux.
 
-## Windows
 
-Run the following commands from a powershell prompt with administative privileges. 
+1. Make the top level directory.
 
-Make the top level directory.
 ```pwsh
 mkdir -p ~/Projects/FinanceManager
 ```
 
-Clone the git repository using SSH.
+2. Clone the git repository using SSH.
+
 ```pwsh
-cd FinanceManager
-git clone -b dev/overhaul git@github.com:diegosol127/FinanceTools.git repo
+git clone -b dev/overhaul git@github.com:diegosol127/FinanceTools.git ~/Projects/FinanceManager/repo
 ```
 
-Create and symlink the data folder
+3. Create and symlink the data folder
+
+### Windows
+
+Run the following commands from a powershell prompt with administative privileges. 
+
 ```pwsh
-mkdir data
 New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\Projects\FinanceManager\data" -Target "$env:USERPROFILE\OneDrive\Documents\Projects\FinanceManager\data"
+```
+
+### Linux
+
+```bash
+ln -s ~/OneDrive/FinanceManager/data ~/Projects/FinanceManager/data
 ```
 
 # Future Work
