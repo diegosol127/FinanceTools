@@ -36,13 +36,13 @@ Follow these steps to set up your environment on either Windows or Linux.
 
 1. Make the top level directory.
 
-```pwsh
+```bash
 mkdir -p ~/Projects/FinanceManager
 ```
 
 2. Clone the git repository using SSH.
 
-```pwsh
+```bash
 git clone -b dev/overhaul git@github.com:diegosol127/FinanceTools.git ~/Projects/FinanceManager/repo
 ```
 
@@ -60,6 +60,13 @@ New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\Projects\FinanceManager\
 
 ```bash
 ln -s ~/OneDrive/FinanceManager/data ~/Projects/FinanceManager/data
+```
+
+### WSL
+
+```bash
+WINUSER=$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')
+ln -s /mnt/c/Users/$WINUSER/OneDrive/Documents/Projects/FinanceManager/data ~/Projects/FinanceManager/data
 ```
 
 # Future Work
