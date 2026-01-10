@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run --rm -v "~/Projects/FinanceManager/data:/app/data" financemanager
+docker run --rm -v "$(realpath $HOME/Projects/FinanceManager/data):/app/data" financemanager
