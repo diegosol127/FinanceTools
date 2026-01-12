@@ -71,8 +71,15 @@ ln -s /mnt/c/Users/$WINUSER/OneDrive/Documents/Projects/FinanceManager/data ~/Pr
 ```
 
 4. Build the docker image (assumes Docker Desktop is already installed).
+
 ```bash
 docker build -t financemanager .
+```
+
+5. Run the project
+
+```bash
+./run.sh
 ```
 
 # Future Work
