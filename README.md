@@ -76,6 +76,11 @@ ln -s /mnt/c/Users/$WINUSER/OneDrive/Documents/Projects/FinanceManager/data ~/Pr
 docker build -t financemanager .
 ```
 
+Rebuilding the image is necessary if any of the following files are changed:
+- `Dockerfile`
+- `requirements.txt`
+- Anything in `src/`
+
 5. Run the project
 
 ```bash
