@@ -70,10 +70,17 @@ WINUSER=$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')
 ln -s /mnt/c/Users/$WINUSER/OneDrive/Documents/Projects/FinanceManager/data ~/Projects/FinanceManager/data
 ```
 
-4. Build the docker image (assumes Docker Desktop is already installed).
+4. Give executable permission to `build.sh` and `run.sh`
 
 ```bash
-docker build -t financemanager .
+chmod +x build.sh
+chmod +x run.sh
+```
+
+5. Build the docker image (assumes Docker Desktop is already installed).
+
+```bash
+./build.sh
 ```
 
 Rebuilding the image is necessary if any of the following files are changed:
@@ -81,7 +88,7 @@ Rebuilding the image is necessary if any of the following files are changed:
 - `requirements.txt`
 - Anything in `src/`
 
-5. Run the project
+6. Run the project
 
 ```bash
 ./run.sh
