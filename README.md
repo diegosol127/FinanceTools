@@ -49,7 +49,7 @@ git clone -b dev/overhaul git@github.com:diegosol127/FinanceTools.git ~/Projects
 
 3. Create and symlink the data folder
 
-### Windows
+**Windows**
 
 Run the following commands from a powershell prompt with administative privileges. 
 
@@ -57,13 +57,13 @@ Run the following commands from a powershell prompt with administative privilege
 New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\Projects\FinanceManager\data" -Target "$env:USERPROFILE\OneDrive\Documents\Projects\FinanceManager\data"
 ```
 
-### Linux
+**Linux**
 
 ```bash
 ln -s ~/OneDrive/FinanceManager/data ~/Projects/FinanceManager/data
 ```
 
-### WSL
+**WSL**
 
 ```bash
 WINUSER=$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')
