@@ -6,7 +6,7 @@ from datetime import datetime
 
 DIR_DATA = Path("/app/data")
 PATH_DB = DIR_DATA / "budget.db"
-DIR_INCOMING = DIR_DATA / "statements"
+DIR_INCOMING = DIR_DATA / "incoming"
 
 def handle_ingest(args):
     print("Running ingest step...")
