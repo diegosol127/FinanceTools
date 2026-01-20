@@ -1,5 +1,12 @@
 import argparse
 import sys
+from pathlib import Path
+import sqlite3
+from datetime import datetime
+
+DIR_DATA = Path("/app/data")
+PATH_DB = DIR_DATA / "budget.db"
+DIR_INCOMING = DIR_DATA / "statements"
 
 def handle_ingest(args):
     print("Running ingest step...")
@@ -15,9 +22,28 @@ def handle_export(args):
 
 def handle_status(args):
     print("FinanceManager status:")
-    print("- Database: TODO")
-    print("- Pending CSVs: TODO")
-    print("- Last run: TODO")
+
+    # --- Database status ---
+    if not PATH_DB.exists():
+        print("Database not found. Creating one instead.")
+        conn = sqlite3.connect(PATH_DB)
+        conn.close()
+    else:
+        print(f"Database found at {PATH_DB}")
+
+    # --- Incoming CSVs ---
+    if DIR_INCOMING.exists():
+        csv_count = len(list(DIR_INCOMING.glob("*.csv")))
+        print(f"Incoming CSV files: {csv_count}")
+    else:
+        print("Incoming CSV directory: missing")
+
+    # --- Timestamp ---
+    print(f"Checked at: {datetime.now().astimezone().strftime('%Y-%m-%d at %H:%M:%S')}")
+
+    # print("- Database: TODO")
+    # print("- Pending CSVs: TODO")
+    # print("- Last run: TODO")
 
 def build_parser():
     parser = argparse.ArgumentParser(
