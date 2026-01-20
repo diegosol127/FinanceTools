@@ -12,6 +12,7 @@ FinanceManager/
 │   │   ├── export/        # HTML / report generation
 │   │   └── main.py
 │   ├── rules/             # JSON/YAML categorization rules
+│   ├── build.sh
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   ├── README.md
