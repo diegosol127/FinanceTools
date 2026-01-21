@@ -1,11 +1,9 @@
 import argparse
 import sys
 from pathlib import Path
-import sqlite3
 from datetime import datetime
+from src.core.db import DIR_DATA, PATH_DB, init_db
 
-DIR_DATA = Path("/app/data")
-PATH_DB = DIR_DATA / "budget.db"
 DIR_INCOMING = DIR_DATA / "incoming"
 
 def handle_ingest(args):
@@ -22,14 +20,8 @@ def handle_export(args):
 
 def handle_status(args):
     print("FinanceManager status:")
-
-    # --- Database status ---
-    if not PATH_DB.exists():
-        print("Database not found. Creating one instead.")
-        conn = sqlite3.connect(PATH_DB)
-        conn.close()
-    else:
-        print(f"Database found at {PATH_DB}")
+    init_db()
+    print(f"Database ready at {PATH_DB}")
 
     # --- Incoming CSVs ---
     if DIR_INCOMING.exists():

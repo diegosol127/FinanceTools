@@ -6,9 +6,9 @@ The directoy structure of this project is broken down into folders, each one tie
 FinanceManager/
 ├── repo/                  # Git repository (code only)
 │   ├── src/               # Python source code
-    │   ├── core/          # SQLite code
-    │   │   ├── db.py      # SQLite connection and scehema
-    │   │   └── models.py  # Canonical definitions
+│   │   ├── core/          # SQLite code module
+│   │   │   ├── db.py      # SQLite connection and scehema
+│   │   │   └── models.py  # Canonical definitions
 │   │   ├── ingest/        # CSV ingestion & parsers
 │   │   ├── normalize/     # Cleaning & normalization logic
 │   │   ├── categorize/    # Merchant & category engine
