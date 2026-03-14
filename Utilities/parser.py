@@ -9,11 +9,12 @@ class CSV:
     # Constructor
     def __init__(self) -> None:
         pass
-    
+
     # Return a data parser based on the name of the institution
     def parse_file(self, file_path: str) -> pd.DataFrame:
         parsers = {
             'AmericanExpress': self.parse_AmericanExpress,
+            'Bilt': self.parse_Bilt,
             'Chase': self.parse_Chase,
             'Fidelity': self.parse_Fidelity,
             'Optum': self.parse_Optum,
@@ -38,6 +39,17 @@ class CSV:
         df['DATE'] = pd.to_datetime(df['DATE']).dt.strftime('%Y-%m-%d')
         df['AMOUNT'] = -df['AMOUNT'].astype(float)
         df['INSTITUTION'] = 'AmericanExpress'
+        return df
+
+   # Parse CSV files in the format given by Bilt
+    def parse_Bilt(self, file_path) -> pd.DataFrame:
+        df = pd.read_csv(file_path, header=None)
+        df.drop(0, axis=0, inplace=True)
+        df = df[df.columns[[0,3,2]]]
+        df.rename(columns={0: 'DATE', 3: 'AMOUNT', 2: 'DESCRIPTION'}, inplace=True)
+        df['DATE'] = pd.to_datetime(df['DATE']).dt.strftime('%Y-%m-%d')
+        df['AMOUNT'] = -df['AMOUNT'].astype(float)
+        df['INSTITUTION'] = 'Bilt'
         return df
 
    # Parse CSV files in the format given by Chase
