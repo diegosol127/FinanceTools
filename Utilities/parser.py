@@ -110,12 +110,17 @@ class CSV:
     # Parse CSV files in the format given by Wells Fargo
     def parse_WellsFargo(self, file_path) -> pd.DataFrame:
         df = pd.read_csv(file_path, header=None)
-        df.drop([2,3],axis=1, inplace=True)
-        df.rename(columns={0: 'DATE', 1: 'AMOUNT', 4: 'DESCRIPTION'}, inplace=True)
+        first_row = df.iloc[0].astype(str).tolist()
+        if first_row[0] == "DATE":
+            df = pd.read_csv(file_path)
+            df = df[['DATE', 'DESCRIPTION', 'AMOUNT']]
+        else:
+            df.drop([2,3], axis=1, inplace=True)
+            df.rename(columns={0: 'DATE', 1: 'AMOUNT', 4: 'DESCRIPTION'}, inplace=True)
         df['DATE'] = pd.to_datetime(df['DATE'], format='%m/%d/%Y').dt.strftime('%Y-%m-%d')
         df['INSTITUTION'] = 'Wells Fargo'
         return df
-    
+
 # JSON classification parser class
 class JSON:
 
